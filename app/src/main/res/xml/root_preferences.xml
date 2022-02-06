@@ -1,0 +1,60 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory app:title="@string/other_header">
+
+        <Preference
+            app:defaultValue="false"
+            app:icon="@drawable/ic_info"
+            app:key="open_source"
+            app:summary="@string/show_open_source"
+            app:title="@string/open_source" />
+
+        <Preference
+            app:defaultValue="false"
+            app:icon="@drawable/ic_info"
+            app:key="show_source"
+            app:summary="@string/open_source_summary"
+            app:title="@string/open_source_title" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/app_info_header">
+
+        <Preference
+            app:defaultValue="false"
+            app:icon="@drawable/ic_info"
+            app:key="info"
+            app:selectable="false"
+            app:title="@string/version_title"
+            app:summary="@string/example_summary" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/legal_information">
+
+        <Preference
+            app:defaultValue="false"
+            android:icon="@drawable/ic_info"
+            app:key="terms_of_service"
+            android:title="@string/terms_of_service"
+            app:summary="@string/terms_of_service_summary" />
+
+        <Preference
+            app:defaultValue="false"
+            app:key="privacy_policy"
+            app:icon="@drawable/ic_info"
+            app:title="@string/privacy_policy"
+            app:summary="@string/privacy_policy_summary" />
+
+        <Preference
+            app:defaultValue="false"
+            app:icon="@drawable/ic_copyright"
+            app:key="copyright"
+            app:selectable="false"
+            app:title="@string/copyright"
+            app:summary="@string/example_summary_2" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

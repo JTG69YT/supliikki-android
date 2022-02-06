@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/mi_home"
+        android:icon="@drawable/ic_home"
+        android:title="Koti" />
+    <item
+        android:id="@+id/mi_hosts"
+        android:icon="@drawable/ic_hosts"
+        android:title="Juontajat" />
+    <item
+        android:id="@+id/mi_settings"
+        android:icon="@drawable/ic_settings"
+        android:title="Asetukset" />
+    <item
+        android:id="@+id/mi_exit"
+        android:icon="@drawable/ic_exit"
+        android:title="Poistu" />
+
+</menu>

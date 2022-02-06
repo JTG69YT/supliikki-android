@@ -1,3 +1,34 @@
 <resources>
     <string name="app_name">Supliikki</string>
+
+    <string name="supliikki_dev_api_url">http://jesunmaailma.tk/supliikki-cms/api/v1/api.php</string>
+    <string name="supliikki_prod_api_url">https://jesunmaailma.ml/supliikki-cms/api/v1/api.php</string>
+
+    <string name="open">Avaa vetovalikko</string>
+    <string name="close">Sulje vetovalikko</string>
+
+    <string name="theme_title" translatable="false">Sovelluksen teema</string>
+    <string name="title_activity_settings" translatable="false">Asetukset</string>
+    <string name="open_source" translatable="false">Avoimen lähdekoodin ohjelmiston käyttöluvat</string>
+    <string name="open_source_title" translatable="false">Sovelluksen lähdekoodi</string>
+
+    <!-- Summary text -->
+    <string name="show_open_source" translatable="false">Näytä avoimen lähdekoodin ohjelmiston käyttöluvat.</string>
+    <string name="open_source_summary" translatable="false">Tämän valinnan painaminen avaa GitHubin ja näyttää miten tämä sovellus on tehty.</string>
+
+    <!-- Header titles -->
+    <string name="general_header" translatable="false">Yleiset</string>
+    <string name="other_header" translatable="false">Muut</string>
+    <string name="app_info_header" translatable="false">Tietoa sovelluksesta</string>
+    <string name="version_title" translatable="false">Versio</string>
+    <string name="example_summary" translatable="false">Versio tulee tähän.</string>
+
+    <string name="legal_information" translatable="false">Juridiset tiedot</string>
+    <string name="terms_of_service_summary" translatable="false">Näytä käyttöehdot.</string>
+    <string name="terms_of_service" translatable="false">Käyttöehdot</string>
+    <string name="privacy_policy" translatable="false">Tietosuojakäytäntö</string>
+    <string name="privacy_policy_summary" translatable="false">Näytä tietosuojakäytäntö.</string>
+
+    <string name="copyright">Copyright</string>
+    <string name="example_summary_2">Tekijänoikeus tulee tähän.</string>
 </resources>
