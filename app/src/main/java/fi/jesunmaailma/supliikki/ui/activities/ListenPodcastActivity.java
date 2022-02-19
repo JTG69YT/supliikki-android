@@ -11,16 +11,16 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.squareup.picasso.Picasso;
-
-import java.util.concurrent.TimeUnit;
 
 import fi.jesunmaailma.supliikki.R;
 import fi.jesunmaailma.supliikki.models.Podcast;
@@ -28,17 +28,14 @@ import jp.wasabeef.glide.transformations.BlurTransformation;
 
 public class ListenPodcastActivity extends AppCompatActivity {
     Toolbar toolbar;
-
     Podcast podcast;
-
-    ImageView backdropImg, podcastLogo, rewind, forward, pause, play;
+    ImageView backdropImg, podcastLogo, rewind, play, pause, forward;
     TextView podcastName, podcastDescription, tvPosition, tvDuration;
     SeekBar seekBar;
-
     MediaPlayer mediaPlayer;
     Handler handler = new Handler();
-    Runnable runnable;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,19 +55,21 @@ public class ListenPodcastActivity extends AppCompatActivity {
         backdropImg = findViewById(R.id.backdropImg);
         podcastLogo = findViewById(R.id.podcastThumbnail);
         rewind = findViewById(R.id.rewind);
-        forward = findViewById(R.id.forward);
-        pause = findViewById(R.id.pause);
         play = findViewById(R.id.play);
-        seekBar = findViewById(R.id.seekBar);
+        pause = findViewById(R.id.pause);
+        forward = findViewById(R.id.forward);
 
         podcastName = findViewById(R.id.podcastName);
         podcastDescription = findViewById(R.id.podcastDescription);
-        tvPosition = findViewById(R.id.tvPosition);
-        tvDuration = findViewById(R.id.tvDuration);
+        tvPosition = findViewById(R.id.tv_position);
+        tvDuration = findViewById(R.id.tv_duration);
+
+        seekBar = findViewById(R.id.seekBar);
+        seekBar.setMax(100);
 
         Glide.with(ListenPodcastActivity.this)
                 .load(podcast.getBackdropUrl())
-                .apply(RequestOptions.bitmapTransform(new BlurTransformation(8, 3)))
+                .apply(RequestOptions.bitmapTransform(new BlurTransformation(12, 12)))
                 .into(backdropImg);
 
         Picasso.get()
@@ -80,39 +79,28 @@ public class ListenPodcastActivity extends AppCompatActivity {
         podcastName.setText(podcast.getName());
         podcastDescription.setText(podcast.getDescription());
 
+        mediaPlayer = new MediaPlayer();
+
         String url = podcast.getPodcastUrl();
-        mediaPlayer = MediaPlayer.create(this, Uri.parse(url));
-
-        runnable = new Runnable() {
-            @Override
-            public void run() {
-                seekBar.setProgress(mediaPlayer.getCurrentPosition());
-                handler.postDelayed(this, 0);
-            }
-        };
-
-        int duration = mediaPlayer.getDuration();
-        String sDuration = convertFormat(duration);
-        tvDuration.setText(sDuration);
+        playPodcast(url);
 
         play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mediaPlayer.start();
                 play.setVisibility(View.GONE);
                 pause.setVisibility(View.VISIBLE);
-                mediaPlayer.start();
-                seekBar.setMax(mediaPlayer.getDuration());
-                handler.postDelayed(runnable, 0);
+                updateSeekbar();
             }
         });
 
         pause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                handler.removeCallbacks(updater);
+                mediaPlayer.pause();
                 pause.setVisibility(View.GONE);
                 play.setVisibility(View.VISIBLE);
-                mediaPlayer.pause();
-                handler.removeCallbacks(runnable);
             }
         });
 
@@ -123,7 +111,7 @@ public class ListenPodcastActivity extends AppCompatActivity {
                 int duration = mediaPlayer.getDuration();
                 if (mediaPlayer.isPlaying() && duration != currentPosition) {
                     currentPosition = currentPosition + 5000;
-                    tvPosition.setText(convertFormat(currentPosition));
+                    tvPosition.setText(millisecondsToTimer(currentPosition));
                     mediaPlayer.seekTo(currentPosition);
                 }
             }
@@ -135,9 +123,20 @@ public class ListenPodcastActivity extends AppCompatActivity {
                 int currentPosition = mediaPlayer.getCurrentPosition();
                 if (mediaPlayer.isPlaying() && currentPosition > 5000) {
                     currentPosition = currentPosition - 5000;
-                    tvPosition.setText(convertFormat(currentPosition));
+                    tvPosition.setText(millisecondsToTimer(currentPosition));
                     mediaPlayer.seekTo(currentPosition);
                 }
+            }
+        });
+
+        seekBar.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                SeekBar seekBar = (SeekBar) v;
+                int playPosition = (mediaPlayer.getDuration() / 100) * seekBar.getProgress();
+                mediaPlayer.seekTo(playPosition);
+                tvPosition.setText(millisecondsToTimer(mediaPlayer.getCurrentPosition()));
+                return false;
             }
         });
 
@@ -147,7 +146,8 @@ public class ListenPodcastActivity extends AppCompatActivity {
                 if (fromUser) {
                     mediaPlayer.seekTo(progress);
                 }
-                tvPosition.setText(convertFormat(mediaPlayer.getCurrentPosition()));
+
+                tvPosition.setText(millisecondsToTimer(mediaPlayer.getCurrentPosition()));
             }
 
             @Override
@@ -161,23 +161,76 @@ public class ListenPodcastActivity extends AppCompatActivity {
             }
         });
 
+        mediaPlayer.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
+            @Override
+            public void onBufferingUpdate(MediaPlayer mp, int i) {
+                seekBar.setSecondaryProgress(i);
+            }
+        });
+
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
+                seekBar.setProgress(0);
+                mediaPlayer.seekTo(0);
                 pause.setVisibility(View.GONE);
                 play.setVisibility(View.VISIBLE);
-                mediaPlayer.seekTo(0);
+                tvPosition.setText(R.string.zero_seconds);
+                tvDuration.setText(R.string.zero_seconds);
+                mediaPlayer.reset();
+                String url = podcast.getPodcastUrl();
+                playPodcast(url);
             }
         });
+
     }
 
-    @SuppressLint("DefaultLocale")
-    private String convertFormat(int duration) {
-        return String.format(
-                "%02d:%02d",
-                TimeUnit.MILLISECONDS.toMinutes(duration),
-                TimeUnit.MILLISECONDS.toSeconds(duration) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(duration))
-        );
+    private void playPodcast(String url) {
+        try {
+            mediaPlayer.setDataSource(this, Uri.parse(url));
+            mediaPlayer.prepare();
+            tvDuration.setText(millisecondsToTimer(mediaPlayer.getDuration()));
+        } catch (Exception e) {
+            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private Runnable updater = new Runnable() {
+        @Override
+        public void run() {
+            updateSeekbar();
+            long currentDuration = mediaPlayer.getCurrentPosition();
+            tvPosition.setText(millisecondsToTimer(currentDuration));
+        }
+    };
+
+    public void updateSeekbar() {
+        if (mediaPlayer.isPlaying()) {
+            seekBar.setProgress((int) (((float) mediaPlayer.getCurrentPosition() / mediaPlayer.getDuration()) * 100));
+            handler.postDelayed(updater, 0);
+        }
+    }
+
+    public String millisecondsToTimer(long milliseconds) {
+        String timerString = "";
+        String secondsString;
+
+        int hours = (int) (milliseconds / (1000 * 60 * 60));
+        int minutes = (int) (milliseconds % (1000 * 60 * 60)) / (1000 * 60);
+        int seconds = (int) ((milliseconds % (1000 * 60 * 60)) % (1000 * 60) / 1000);
+
+        if (hours > 0) {
+            timerString = hours + ":";
+        }
+
+        if (seconds < 10) {
+            secondsString = "0" + seconds;
+        } else {
+            secondsString = "" + seconds;
+        }
+
+        timerString = timerString + minutes + ":" + secondsString;
+        return timerString;
     }
 
     @Override

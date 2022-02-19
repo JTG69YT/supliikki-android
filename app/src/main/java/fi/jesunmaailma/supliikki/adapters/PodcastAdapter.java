@@ -11,6 +11,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -18,13 +20,18 @@ import java.util.List;
 import fi.jesunmaailma.supliikki.R;
 import fi.jesunmaailma.supliikki.models.Podcast;
 import fi.jesunmaailma.supliikki.ui.activities.ListenPodcastActivity;
+import fi.jesunmaailma.supliikki.ui.activities.Login;
 
 public class PodcastAdapter extends RecyclerView.Adapter<PodcastAdapter.ViewHolder> {
     List<Podcast> podcasts;
     View view;
+    FirebaseAuth auth;
+    FirebaseUser user;
 
-    public PodcastAdapter(List<Podcast> podcasts) {
+    public PodcastAdapter(List<Podcast> podcasts, FirebaseAuth auth, FirebaseUser user) {
         this.podcasts = podcasts;
+        this.auth = auth;
+        this.user = user;
     }
 
     @NonNull
@@ -40,15 +47,23 @@ public class PodcastAdapter extends RecyclerView.Adapter<PodcastAdapter.ViewHold
 
         Picasso.get()
                 .load(podcast.getThumbnailUrl())
-                .placeholder(R.mipmap.supliikki_logo_color)
+                .placeholder(R.drawable.supliikki_placeholder_512x512)
                 .into(holder.podcastThumbnail);
+
+        auth = FirebaseAuth.getInstance();
+        user = auth.getCurrentUser();
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), ListenPodcastActivity.class);
-                intent.putExtra("podcast", podcast);
-                v.getContext().startActivity(intent);
+                if (user != null) {
+                    Intent intent = new Intent(v.getContext(), ListenPodcastActivity.class);
+                    intent.putExtra("podcast", podcast);
+                    v.getContext().startActivity(intent);
+                } else {
+                    Intent intent = new Intent(v.getContext(), Login.class);
+                    v.getContext().startActivity(intent);
+                }
             }
         });
     }

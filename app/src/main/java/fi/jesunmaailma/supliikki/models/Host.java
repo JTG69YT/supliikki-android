@@ -3,16 +3,16 @@ package fi.jesunmaailma.supliikki.models;
 import java.io.Serializable;
 
 public class Host implements Serializable {
-    private int id;
+    private String id;
     private String name;
     private String description;
     private String hostImage;
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

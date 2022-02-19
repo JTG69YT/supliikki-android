@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -40,8 +41,11 @@ public class HostsAdapter extends RecyclerView.Adapter<HostsAdapter.ViewHolder> 
 
         Picasso.get()
                 .load(host.getHostImage())
-                .placeholder(R.mipmap.supliikki_logo_color)
+                .placeholder(R.drawable.supliikki_placeholder_512x512)
                 .into(holder.hostThumbnail);
+
+        holder.hostName.setText(host.getName());
+        holder.hostDescription.setText(host.getDescription());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,11 +64,14 @@ public class HostsAdapter extends RecyclerView.Adapter<HostsAdapter.ViewHolder> 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView hostThumbnail;
+        TextView hostName, hostDescription;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             hostThumbnail = itemView.findViewById(R.id.hostThumbnail);
+            hostName = itemView.findViewById(R.id.hostName);
+            hostDescription = itemView.findViewById(R.id.hostDescription);
         }
     }
 }

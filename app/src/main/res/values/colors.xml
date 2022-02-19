@@ -10,5 +10,5 @@
     <color name="background_color">#FFFFFF</color>
     <color name="brand_color">#EC008C</color>
     <color name="ripple_color">#8f0000ff</color>
-    <color name="grey">#F0F0F0</color>
+    <color name="grey">#333333</color>
 </resources>

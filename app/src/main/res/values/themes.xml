@@ -37,12 +37,12 @@
         <!-- Customize your theme here. -->
 
         <item name="container_background">#00142f</item>
-        <item name="background_color">#f0f0f0</item>
+        <item name="background_color">#ec008c</item>
         <item name="snackbar_background_color">#111111</item>
         <item name="snackbar_text_color">#ffffff</item>
         <item name="text_color">#000000</item>
-        <item name="container_text_color">#000000</item>
-        <item name="appbar_color">@color/background_color</item>
+        <item name="container_text_color">#ffffff</item>
+        <item name="appbar_color">@color/brand_color</item>
     </style>
 
     <style name="Theme.Supliikki.LaunchScreen" parent="Theme.MaterialComponents.Light.NoActionBar">

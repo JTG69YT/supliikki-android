@@ -5,7 +5,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -85,7 +85,7 @@ public class HostsActivity extends AppCompatActivity {
         hostsAdapter = new HostsAdapter(hosts);
         hostList.setAdapter(hostsAdapter);
 
-        GridLayoutManager manager = new GridLayoutManager(this, 2);
+        LinearLayoutManager manager = new LinearLayoutManager(this);
         hostList.setLayoutManager(manager);
 
         pbLoadingHosts.setVisibility(View.VISIBLE);
@@ -123,7 +123,7 @@ public class HostsActivity extends AppCompatActivity {
 
                         Host host = new Host();
 
-                        host.setId(hostData.getInt("id"));
+                        host.setId(hostData.getString("id"));
                         host.setName(hostData.getString("name"));
                         host.setDescription(hostData.getString("description"));
                         host.setHostImage(hostData.getString("host_image"));

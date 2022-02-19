@@ -20,6 +20,16 @@
             android:exported="true"
             android:theme="@style/Theme.Supliikki.NoActionBar" />
         <activity
+            android:name=".ui.activities.Login"
+            android:configChanges="orientation|screenSize|layoutDirection"
+            android:exported="true"
+            android:theme="@style/Theme.Supliikki.NoActionBar" />
+        <activity
+            android:name=".ui.activities.RegisterActivity"
+            android:configChanges="orientation|screenSize|layoutDirection"
+            android:exported="true"
+            android:theme="@style/Theme.Supliikki.NoActionBar" />
+        <activity
             android:name=".ui.activities.ListenPodcastActivity"
             android:configChanges="orientation|screenSize|layoutDirection"
             android:exported="true"

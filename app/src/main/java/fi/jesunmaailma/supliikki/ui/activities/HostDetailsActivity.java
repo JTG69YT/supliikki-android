@@ -48,7 +48,7 @@ public class HostDetailsActivity extends AppCompatActivity {
 
         Glide.with(HostDetailsActivity.this)
                 .load(host.getHostImage())
-                .apply(RequestOptions.bitmapTransform(new BlurTransformation(8, 3)))
+                .apply(RequestOptions.bitmapTransform(new BlurTransformation(10, 6)))
                 .into(backdropImg);
 
         Picasso.get()

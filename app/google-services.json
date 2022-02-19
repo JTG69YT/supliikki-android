@@ -60,6 +60,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "963601714063-bnu9pq4alsd9knu72s3dq1hoarqnb7si.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "fi.jesunmaailma.supliikki",
+            "certificate_hash": "e7e0f128caab46f81ef5be68b4340d3822e09cc0"
+          }
+        },
+        {
+          "client_id": "963601714063-u7m02a9pm2h26vcptc4v81khins03d3c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "fi.jesunmaailma.supliikki",
+            "certificate_hash": "2daa2e083c9f7c4b4a6925b6e939d5acaab3a1cd"
+          }
+        },
+        {
           "client_id": "963601714063-0bcq44vdoulbn7u83rhj1ij9onfsf3rc.apps.googleusercontent.com",
           "client_type": 3
         }

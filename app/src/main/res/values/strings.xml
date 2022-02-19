@@ -3,9 +3,17 @@
 
     <string name="supliikki_dev_api_url">http://jesunmaailma.tk/supliikki-cms/api/v1/api.php</string>
     <string name="supliikki_prod_api_url">https://jesunmaailma.ml/supliikki-cms/api/v1/api.php</string>
+    <string name="supliiikki_api_key">1A4mgi2rBHCJdqggsYVx</string>
 
     <string name="open">Avaa vetovalikko</string>
     <string name="close">Sulje vetovalikko</string>
+
+    <string name="read_more" translatable="false">Lue lisää Jesun Maailma -tilistä</string>
+
+    <string name="email" translatable="false">Sähköpostiosoite <font color="#ec008c">*</font></string>
+    <string name="password" translatable="false">Salasana <font color="#ec008c">*</font></string>
+    <string name="first_name" translatable="false">Etunimi <font color="#ec008c">*</font></string>
+    <string name="last_name" translatable="false">Sukunimi <font color="#ec008c">*</font></string>
 
     <string name="theme_title" translatable="false">Sovelluksen teema</string>
     <string name="title_activity_settings" translatable="false">Asetukset</string>
@@ -31,4 +39,5 @@
 
     <string name="copyright">Copyright</string>
     <string name="example_summary_2">Tekijänoikeus tulee tähän.</string>
+    <string name="zero_seconds">00:00</string>
 </resources>
