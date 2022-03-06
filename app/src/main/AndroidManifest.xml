@@ -20,21 +20,6 @@
             android:exported="true"
             android:theme="@style/Theme.Supliikki.NoActionBar" />
         <activity
-            android:name=".ui.activities.Login"
-            android:configChanges="orientation|screenSize|layoutDirection"
-            android:exported="true"
-            android:theme="@style/Theme.Supliikki.NoActionBar" />
-        <activity
-            android:name=".ui.activities.RegisterActivity"
-            android:configChanges="orientation|screenSize|layoutDirection"
-            android:exported="true"
-            android:theme="@style/Theme.Supliikki.NoActionBar" />
-        <activity
-            android:name=".ui.activities.ListenPodcastActivity"
-            android:configChanges="orientation|screenSize|layoutDirection"
-            android:exported="true"
-            android:theme="@style/Theme.Supliikki.NoActionBar" />
-        <activity
             android:name=".ui.activities.HostsActivity"
             android:configChanges="orientation|screenSize|layoutDirection"
             android:exported="true"
@@ -48,6 +33,7 @@
         <activity
             android:name=".ui.activities.LaunchActivity"
             android:configChanges="screenSize|layoutDirection|orientation"
+            android:screenOrientation="portrait"
             android:exported="true"
             android:theme="@style/Theme.Supliikki.LaunchScreen">
             <intent-filter>
@@ -71,6 +57,7 @@
         </activity>
         <activity
             android:name=".ui.activities.SplashActivity"
+            android:screenOrientation="portrait"
             android:configChanges="screenSize|layoutDirection|orientation"
             android:exported="true"
             android:theme="@style/Theme.Supliikki.NoActionBar">
@@ -93,6 +80,14 @@
             android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
             android:configChanges="orientation|screenSize|layoutDirection"
             android:theme="@style/Theme.Supliikki" />
+
+        <service
+            android:name=".services.SupliikkiFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

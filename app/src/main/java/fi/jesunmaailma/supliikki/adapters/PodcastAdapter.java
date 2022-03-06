@@ -1,37 +1,33 @@
 package fi.jesunmaailma.supliikki.adapters;
 
-import android.app.Activity;
-import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.android.exoplayer2.ExoPlayer;
+import com.google.android.exoplayer2.MediaItem;
+import com.google.android.exoplayer2.MediaMetadata;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import fi.jesunmaailma.supliikki.R;
 import fi.jesunmaailma.supliikki.models.Podcast;
-import fi.jesunmaailma.supliikki.ui.activities.ListenPodcastActivity;
-import fi.jesunmaailma.supliikki.ui.activities.Login;
 
 public class PodcastAdapter extends RecyclerView.Adapter<PodcastAdapter.ViewHolder> {
     List<Podcast> podcasts;
     View view;
-    FirebaseAuth auth;
-    FirebaseUser user;
+    ExoPlayer player;
 
-    public PodcastAdapter(List<Podcast> podcasts, FirebaseAuth auth, FirebaseUser user) {
+    public PodcastAdapter(List<Podcast> podcasts, ExoPlayer player) {
         this.podcasts = podcasts;
-        this.auth = auth;
-        this.user = user;
+        this.player = player;
     }
 
     @NonNull
@@ -44,28 +40,53 @@ public class PodcastAdapter extends RecyclerView.Adapter<PodcastAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull PodcastAdapter.ViewHolder holder, int position) {
         Podcast podcast = podcasts.get(position);
+        int pos = position;
 
         Picasso.get()
                 .load(podcast.getThumbnailUrl())
                 .placeholder(R.drawable.supliikki_placeholder_512x512)
                 .into(holder.podcastThumbnail);
 
-        auth = FirebaseAuth.getInstance();
-        user = auth.getCurrentUser();
-
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (user != null) {
-                    Intent intent = new Intent(v.getContext(), ListenPodcastActivity.class);
-                    intent.putExtra("podcast", podcast);
-                    v.getContext().startActivity(intent);
+                MediaItem mediaItem = getMediaItem(podcast);
+                if (!player.isPlaying()) {
+                    player.setMediaItems(getMediaItems(), pos, 0);
                 } else {
-                    Intent intent = new Intent(v.getContext(), Login.class);
-                    v.getContext().startActivity(intent);
+                    player.pause();
+                    player.seekTo(pos, 0);
                 }
+                player.prepare();
+                player.setPlayWhenReady(true);
             }
         });
+    }
+
+    public List<MediaItem> getMediaItems() {
+        List<MediaItem> mediaItems = new ArrayList<>();
+        for (Podcast podcast : podcasts) {
+            MediaItem.Builder mediaItem = new MediaItem.Builder();
+            mediaItem.setUri(podcast.getPodcastUrl());
+            mediaItem.setMediaMetadata(getMetadata(podcast));
+            mediaItems.add(mediaItem.build());
+        }
+        return mediaItems;
+    }
+
+    public MediaItem getMediaItem(Podcast podcast) {
+        MediaItem.Builder builder = new MediaItem.Builder();
+        builder.setUri(podcast.getPodcastUrl());
+        builder.setMediaMetadata(getMetadata(podcast));
+        return builder.build();
+    }
+
+    public MediaMetadata getMetadata(Podcast podcast) {
+        MediaMetadata.Builder builder = new MediaMetadata.Builder();
+        builder.setTitle(podcast.getName());
+        builder.setDescription(podcast.getDescription());
+        builder.setArtworkUri(Uri.parse(podcast.getThumbnailUrl()));
+        return builder.build();
     }
 
     @Override
@@ -73,7 +94,7 @@ public class PodcastAdapter extends RecyclerView.Adapter<PodcastAdapter.ViewHold
         return podcasts.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView podcastThumbnail;
 
         public ViewHolder(@NonNull View itemView) {

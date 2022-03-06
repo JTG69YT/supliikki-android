@@ -90,7 +90,12 @@ public class HostsActivity extends AppCompatActivity {
 
         pbLoadingHosts.setVisibility(View.VISIBLE);
 
-        getHostData(getResources().getString(R.string.supliikki_prod_api_url) + "?api_key=1A4mgi2rBHCJdqggsYVx&hosts=all&user_id=1");
+        getHostData(
+                getResources().getString(R.string.supliikki_prod_api_url) +
+                        "?api_key=" +
+                        getResources().getString(R.string.supliikki_api_key) +
+                        "&hosts=all&user_id=1"
+        );
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -102,7 +107,12 @@ public class HostsActivity extends AppCompatActivity {
                 errorContainer.setVisibility(View.GONE);
 
                 hostList.setVisibility(View.GONE);
-                getHostData(getResources().getString(R.string.supliikki_prod_api_url) + "?api_key=1A4mgi2rBHCJdqggsYVx&hosts=all&user_id=1");
+                getHostData(
+                        getResources().getString(R.string.supliikki_prod_api_url) +
+                                "?api_key=" +
+                                getResources().getString(R.string.supliikki_api_key) +
+                                "&hosts=all&user_id=1"
+                );
             }
         });
     }

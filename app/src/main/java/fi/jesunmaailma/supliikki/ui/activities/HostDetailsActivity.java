@@ -10,13 +10,11 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.squareup.picasso.Picasso;
 
 import fi.jesunmaailma.supliikki.R;
 import fi.jesunmaailma.supliikki.models.Host;
-import jp.wasabeef.glide.transformations.BlurTransformation;
+import jp.wasabeef.picasso.transformations.BlurTransformation;
 
 public class HostDetailsActivity extends AppCompatActivity {
     Host host;
@@ -46,13 +44,14 @@ public class HostDetailsActivity extends AppCompatActivity {
         hostName = findViewById(R.id.hostName);
         hostDescription = findViewById(R.id.hostDescription);
 
-        Glide.with(HostDetailsActivity.this)
+        Picasso.get()
                 .load(host.getHostImage())
-                .apply(RequestOptions.bitmapTransform(new BlurTransformation(10, 6)))
+                .transform(new BlurTransformation(getApplicationContext(), 20))
                 .into(backdropImg);
 
         Picasso.get()
                 .load(host.getHostImage())
+                .placeholder(R.drawable.supliikki_placeholder_512x512)
                 .into(hostThumbnail);
 
         hostName.setText(host.getName());
