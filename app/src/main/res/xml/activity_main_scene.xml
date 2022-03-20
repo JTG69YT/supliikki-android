@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:motion="http://schemas.android.com/apk/res-auto">
+
+    <ConstraintSet android:id="@+id/start"></ConstraintSet>
+
+    <ConstraintSet android:id="@+id/end">
+        <Constraint
+            android:id="@+id/backdropImg"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toTopOf="parent"
+            motion:layout_constraintVertical_bias="1.0"
+            android:alpha="0" />
+        <Constraint
+            android:id="@+id/constraintLayout3"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:alpha="1"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintStart_toStartOf="parent" />
+        <Constraint
+            android:id="@+id/open_player_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:alpha="1"
+            motion:layout_constraintBottom_toBottomOf="@+id/constraintLayout3"
+            motion:layout_constraintBottom_toTopOf="@+id/backdropImg"
+            motion:layout_constraintStart_toStartOf="@+id/constraintLayout3"
+            motion:layout_constraintTop_toTopOf="@+id/constraintLayout3" />
+        <Constraint
+            android:id="@+id/nowPlayingPodcastName"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:alpha="1"
+            motion:layout_constraintBottom_toBottomOf="@+id/playerThumbnail"
+            motion:layout_constraintStart_toEndOf="@+id/playerThumbnail"
+            motion:layout_constraintTop_toTopOf="@+id/playerThumbnail" />
+        <Constraint
+            android:id="@+id/cardView5"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="8dp"
+            android:alpha="1"
+            motion:layout_constraintBottom_toBottomOf="@+id/podcastName"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintTop_toTopOf="@+id/constraintLayout3" />
+        <Constraint
+            android:id="@+id/appbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:elevation="16dp"
+            android:visibility="visible"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toTopOf="parent" />
+        <Constraint
+            android:id="@+id/podcastName"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toBottomOf="@+id/cardView2"
+            motion:layout_constraintVertical_bias="1.0"
+            android:alpha="0" />
+        <Constraint
+            android:id="@+id/cardView2"
+            android:layout_width="150dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toBottomOf="@+id/close_player_view"
+            motion:layout_constraintVertical_bias="1.0"
+            android:alpha="0" />
+        <Constraint
+            android:id="@+id/constraintLayout"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toBottomOf="@+id/cardView2"
+            android:alpha="0" />
+        <Constraint
+            android:id="@+id/podcastDescription"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            motion:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toBottomOf="@+id/podcastName"
+            android:alpha="0" />
+        <Constraint
+            android:id="@+id/close_player_view"
+            android:layout_width="32dp"
+            android:layout_height="1dp"
+            android:alpha="0"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintStart_toStartOf="parent" />
+        <Constraint
+            android:id="@+id/swipe_refresh"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="visible"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toBottomOf="@+id/appbar" />
+        <Constraint
+            android:id="@+id/playerThumbnail"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="8dp"
+            android:alpha="1"
+            motion:layout_constraintBottom_toBottomOf="@+id/open_player_view"
+            motion:layout_constraintStart_toEndOf="@+id/open_player_view"
+            motion:layout_constraintTop_toTopOf="@+id/open_player_view" />
+    </ConstraintSet>
+    <Transition
+        motion:constraintSetEnd="@+id/start"
+        motion:constraintSetStart="@+id/end">
+        <OnSwipe
+            motion:dragDirection="dragUp"
+            motion:touchAnchorId="@+id/constraintLayout3"
+            motion:touchAnchorSide="bottom" />
+        <OnClick motion:targetId="@+id/constraintLayout3" />
+    </Transition>
+    <Transition
+        motion:constraintSetEnd="@+id/end"
+        motion:constraintSetStart="@+id/start">
+        <OnSwipe
+            motion:dragDirection="dragDown"
+            motion:touchAnchorId="@+id/constraintLayout3"
+            motion:touchAnchorSide="bottom"
+            motion:springStiffness="2000.0"
+            motion:springDamping="24.468"
+            motion:springMass="10.0" />
+        <OnClick motion:targetId="@+id/close_player_view" />
+        <KeyFrameSet >
+            <KeyAttribute
+                motion:motionTarget="@+id/constraintLayout" />
+        </KeyFrameSet>
+    </Transition>
+</MotionScene>

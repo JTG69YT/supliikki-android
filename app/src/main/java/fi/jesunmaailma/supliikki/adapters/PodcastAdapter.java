@@ -75,18 +75,18 @@ public class PodcastAdapter extends RecyclerView.Adapter<PodcastAdapter.ViewHold
     }
 
     public MediaItem getMediaItem(Podcast podcast) {
-        MediaItem.Builder builder = new MediaItem.Builder();
-        builder.setUri(podcast.getPodcastUrl());
-        builder.setMediaMetadata(getMetadata(podcast));
-        return builder.build();
+        return new MediaItem.Builder()
+                .setUri(podcast.getPodcastUrl())
+                .setMediaMetadata(getMetadata(podcast))
+                .build();
     }
 
     public MediaMetadata getMetadata(Podcast podcast) {
-        MediaMetadata.Builder builder = new MediaMetadata.Builder();
-        builder.setTitle(podcast.getName());
-        builder.setDescription(podcast.getDescription());
-        builder.setArtworkUri(Uri.parse(podcast.getThumbnailUrl()));
-        return builder.build();
+        return new MediaMetadata.Builder()
+                .setTitle(podcast.getName())
+                .setDescription(podcast.getDescription())
+                .setArtworkUri(Uri.parse(podcast.getThumbnailUrl()))
+                .build();
     }
 
     @Override

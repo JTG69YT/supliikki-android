@@ -1,31 +1,31 @@
 package fi.jesunmaailma.supliikki.ui.activities;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.google.android.exoplayer2.ExoPlayer;
-import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.Player;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.squareup.picasso.Picasso;
@@ -37,6 +37,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 import fi.jesunmaailma.supliikki.R;
 import fi.jesunmaailma.supliikki.adapters.BigSliderAdapter;
@@ -44,6 +45,7 @@ import fi.jesunmaailma.supliikki.adapters.PodcastAdapter;
 import fi.jesunmaailma.supliikki.models.BigSlider;
 import fi.jesunmaailma.supliikki.models.Podcast;
 import fi.jesunmaailma.supliikki.services.SupliikkiDataService;
+import jp.wasabeef.picasso.transformations.BlurTransformation;
 
 public class MainActivity extends AppCompatActivity {
     public static final String ID = "id";
@@ -61,17 +63,18 @@ public class MainActivity extends AppCompatActivity {
     List<BigSlider> promoItemsList;
     List<Podcast> podcasts;
 
-    ConstraintLayout playerWrapper;
-    ImageView podcastThumbnail;
-    TextView podcastName;
+    ImageView backdropImg, rewind, playBtn, pauseBtn, forward, podcastThumbnail, playerThumbnail;
+    TextView nowPlayingPodcastName, podcastName, podcastDescription, tvPosition, tvDuration;
+    SeekBar seekBar;
+
     ExoPlayer player;
 
     Toolbar toolbar;
     SwipeRefreshLayout swipeRefreshLayout;
 
-    CardView play, pause, errorContainer;
+    CardView errorContainer;
 
-    ProgressBar pbLoadingAudio, pbLoadingSlider, pbLoadingPodcasts;
+    ProgressBar pbLoading, pbLoadingSlider, pbLoadingPodcasts;
 
     SupliikkiDataService service;
 
@@ -90,14 +93,25 @@ public class MainActivity extends AppCompatActivity {
         LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         podcastList.setLayoutManager(manager);
 
-        playerWrapper = findViewById(R.id.playerWrapper);
-        podcastThumbnail = playerWrapper.findViewById(R.id.playerThumbnail);
-        podcastName = playerWrapper.findViewById(R.id.playerName);
+        backdropImg = findViewById(R.id.backdropImg);
+        podcastThumbnail = findViewById(R.id.podcastThumbnail);
 
-        play = playerWrapper.findViewById(R.id.play);
-        pause = playerWrapper.findViewById(R.id.pause);
+        playerThumbnail = findViewById(R.id.playerThumbnail);
 
-        pbLoadingAudio = playerWrapper.findViewById(R.id.pbLoadingAudio);
+        rewind = findViewById(R.id.rewind);
+        forward = findViewById(R.id.forward);
+
+        podcastName = findViewById(R.id.podcastName);
+        podcastDescription = findViewById(R.id.podcastDescription);
+        nowPlayingPodcastName = findViewById(R.id.nowPlayingPodcastName);
+
+        tvPosition = findViewById(R.id.tvPosition);
+        tvDuration = findViewById(R.id.tvDuration);
+
+        seekBar = findViewById(R.id.seekBar);
+
+        playBtn = findViewById(R.id.playBtn);
+        pauseBtn = findViewById(R.id.pauseBtn);
 
         service = new SupliikkiDataService(this);
 
@@ -109,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
 
         errorContainer = findViewById(R.id.error_container);
 
+        pbLoading = findViewById(R.id.pb_loading);
         pbLoadingSlider = findViewById(R.id.pbLoadingSlider);
         pbLoadingPodcasts = findViewById(R.id.pbLoadingPodcasts);
 
@@ -274,27 +289,102 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void playerControls() {
-        pause.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (player.isPlaying()) {
-                    player.pause();
-                    pause.setVisibility(View.GONE);
-                    play.setVisibility(View.VISIBLE);
-                }
-            }
-        });
-
-        play.setOnClickListener(new View.OnClickListener() {
+        playBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (player.getMediaItemCount() > 0) {
                     player.play();
-                    play.setVisibility(View.GONE);
-                    pause.setVisibility(View.VISIBLE);
+                    playBtn.setVisibility(View.GONE);
+                    pauseBtn.setVisibility(View.VISIBLE);
                 }
             }
         });
+
+        pauseBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (player.isPlaying()) {
+                    player.pause();
+                    pauseBtn.setVisibility(View.GONE);
+                    playBtn.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        rewind.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int currentPosition = (int) player.getCurrentPosition();
+                int duration = (int) player.getDuration();
+                if (player.isPlaying() && duration > 5000) {
+                    currentPosition = currentPosition - 5000;
+                    tvPosition.setText(getReadableTime(currentPosition));
+                    player.seekTo(currentPosition);
+                }
+            }
+        });
+
+        forward.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int currentPosition = (int) player.getCurrentPosition();
+                int duration = (int) player.getDuration();
+                if (player.isPlaying() && duration != currentPosition) {
+                    currentPosition = currentPosition + 5000;
+                    tvPosition.setText(getReadableTime(currentPosition));
+                    player.seekTo(player.getCurrentPosition());
+                }
+            }
+        });
+
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (fromUser) {
+                    player.seekTo(progress);
+                }
+                tvPosition.setText(getReadableTime((int) player.getCurrentPosition()));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+        });
+
+        if (player.isPlaying()) {
+            nowPlayingPodcastName.setText(Objects.requireNonNull(player.getCurrentMediaItem()).mediaMetadata.title);
+            podcastName.setText(Objects.requireNonNull(player.getCurrentMediaItem()).mediaMetadata.title);
+            podcastDescription.setText(Objects.requireNonNull(player.getCurrentMediaItem()).mediaMetadata.description);
+            tvPosition.setText(getReadableTime((int) player.getCurrentPosition()));
+            seekBar.setProgress((int) player.getCurrentPosition());
+            tvDuration.setText(getReadableTime((int) player.getDuration()));
+            seekBar.setMax((int) player.getDuration());
+            playBtn.setVisibility(View.GONE);
+            pauseBtn.setVisibility(View.VISIBLE);
+
+            Picasso.get()
+                    .load(Objects.requireNonNull(player.getCurrentMediaItem()).mediaMetadata.artworkUri)
+                    .placeholder(R.drawable.supliikki_placeholder_512x512)
+                    .transform(new BlurTransformation(MainActivity.this, 20))
+                    .into(backdropImg);
+
+            Picasso.get()
+                    .load(Objects.requireNonNull(player.getCurrentMediaItem()).mediaMetadata.artworkUri)
+                    .placeholder(R.drawable.supliikki_placeholder_512x512)
+                    .into(playerThumbnail);
+
+            Picasso.get()
+                    .load(Objects.requireNonNull(player.getCurrentMediaItem()).mediaMetadata.artworkUri)
+                    .placeholder(R.drawable.supliikki_placeholder_512x512)
+                    .into(podcastThumbnail);
+
+            updatePlayerPositionProgress();
+        }
 
         playerListener();
     }
@@ -302,38 +392,65 @@ public class MainActivity extends AppCompatActivity {
     private void playerListener() {
         player.addListener(new Player.Listener() {
             @Override
-            public void onMediaItemTransition(@Nullable MediaItem mediaItem, int reason) {
-                assert mediaItem != null;
-
-                Picasso.get()
-                        .load(mediaItem.mediaMetadata.artworkUri)
-                        .placeholder(R.drawable.supliikki_placeholder_512x512)
-                        .into(podcastThumbnail);
-
-                podcastName.setText(mediaItem.mediaMetadata.title);
-            }
-
-            @Override
             public void onPlaybackStateChanged(int playbackState) {
                 if (playbackState == ExoPlayer.STATE_BUFFERING) {
-                    playerWrapper.setVisibility(View.VISIBLE);
-                    play.setVisibility(View.GONE);
-                    pause.setVisibility(View.GONE);
-                    pbLoadingAudio.setVisibility(View.VISIBLE);
+                    playBtn.setVisibility(View.GONE);
+                    pauseBtn.setVisibility(View.GONE);
+                    pbLoading.setVisibility(View.VISIBLE);
                 } else if (playbackState == ExoPlayer.STATE_READY) {
-                    play.setVisibility(View.GONE);
-                    pause.setVisibility(View.VISIBLE);
-                    pbLoadingAudio.setVisibility(View.GONE);
+                    playBtn.setVisibility(View.GONE);
+                    pauseBtn.setVisibility(View.VISIBLE);
+                    pbLoading.setVisibility(View.GONE);
+
+                    Picasso.get()
+                            .load(Objects.requireNonNull(player.getCurrentMediaItem()).mediaMetadata.artworkUri)
+                            .placeholder(R.drawable.supliikki_placeholder_512x512)
+                            .transform(new BlurTransformation(MainActivity.this, 20))
+                            .into(backdropImg);
+
+                    Picasso.get()
+                            .load(Objects.requireNonNull(player.getCurrentMediaItem()).mediaMetadata.artworkUri)
+                            .placeholder(R.drawable.supliikki_placeholder_512x512)
+                            .into(playerThumbnail);
 
                     Picasso.get()
                             .load(Objects.requireNonNull(player.getCurrentMediaItem()).mediaMetadata.artworkUri)
                             .placeholder(R.drawable.supliikki_placeholder_512x512)
                             .into(podcastThumbnail);
 
+                    nowPlayingPodcastName.setText(Objects.requireNonNull(player.getCurrentMediaItem()).mediaMetadata.title);
                     podcastName.setText(Objects.requireNonNull(player.getCurrentMediaItem()).mediaMetadata.title);
+                    podcastDescription.setText(Objects.requireNonNull(player.getCurrentMediaItem()).mediaMetadata.description);
+                    tvPosition.setText(getReadableTime((int) player.getCurrentPosition()));
+                    seekBar.setProgress((int) player.getCurrentPosition());
+                    tvDuration.setText(getReadableTime((int) player.getDuration()));
+                    seekBar.setMax((int) player.getDuration());
+                    updatePlayerPositionProgress();
                 }
             }
         });
+    }
+
+    private void updatePlayerPositionProgress() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (player.isPlaying()) {
+                    tvPosition.setText(getReadableTime((int) player.getCurrentPosition()));
+                    seekBar.setProgress((int) player.getCurrentPosition());
+                }
+
+                //repeat calling method
+                updatePlayerPositionProgress();
+            }
+        }, 1000);
+    }
+
+    @SuppressLint("DefaultLocale")
+    private String getReadableTime(int totalDuration) {
+        return String.format("%02d:%02d",
+                TimeUnit.MILLISECONDS.toMinutes(totalDuration),
+                TimeUnit.MILLISECONDS.toSeconds(totalDuration) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(totalDuration)));
     }
 
     @Override
