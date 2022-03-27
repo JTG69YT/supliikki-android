@@ -13,8 +13,8 @@ android {
         applicationId "fi.jesunmaailma.supliikki"
         minSdk 21
         targetSdk 31
-        versionCode 20220320
-        versionName '2022.3.20'
+        versionCode 20220327
+        versionName '2022.3.27'
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -47,7 +47,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging:23.0.2'
     implementation 'com.google.firebase:firebase-crashlytics:18.2.9'
     implementation 'com.google.firebase:firebase-perf:20.0.6'
-    implementation 'com.google.firebase:firebase-analytics:20.1.1'
+    implementation 'com.google.firebase:firebase-analytics:20.1.2'
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
     implementation 'androidx.preference:preference:1.2.0'
     implementation 'androidx.browser:browser:1.4.0'

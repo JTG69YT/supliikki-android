@@ -1,6 +1,7 @@
 package fi.jesunmaailma.supliikki.ui.activities;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -26,6 +27,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.google.android.exoplayer2.ExoPlayer;
+import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.Player;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.squareup.picasso.Picasso;
@@ -332,7 +334,7 @@ public class MainActivity extends AppCompatActivity {
                 if (player.isPlaying() && duration != currentPosition) {
                     currentPosition = currentPosition + 5000;
                     tvPosition.setText(getReadableTime(currentPosition));
-                    player.seekTo(player.getCurrentPosition());
+                    player.seekTo(currentPosition);
                 }
             }
         });
@@ -391,6 +393,37 @@ public class MainActivity extends AppCompatActivity {
 
     private void playerListener() {
         player.addListener(new Player.Listener() {
+            @Override
+            public void onMediaItemTransition(@Nullable MediaItem mediaItem, int reason) {
+                assert mediaItem != null;
+
+                Picasso.get()
+                        .load(mediaItem.mediaMetadata.artworkUri)
+                        .transform(new BlurTransformation(MainActivity.this, 20))
+                        .placeholder(R.drawable.supliikki_banner_placeholder)
+                        .into(backdropImg);
+
+                Picasso.get()
+                        .load(mediaItem.mediaMetadata.artworkUri)
+                        .placeholder(R.drawable.supliikki_placeholder_512x512)
+                        .into(playerThumbnail);
+
+                Picasso.get()
+                        .load(mediaItem.mediaMetadata.artworkUri)
+                        .placeholder(R.drawable.supliikki_placeholder_512x512)
+                        .into(podcastThumbnail);
+
+                nowPlayingPodcastName.setText(mediaItem.mediaMetadata.title);
+                podcastName.setText(mediaItem.mediaMetadata.title);
+                podcastDescription.setText(mediaItem.mediaMetadata.description);
+                tvPosition.setText(getReadableTime((int) player.getCurrentPosition()));
+                seekBar.setProgress((int) player.getCurrentPosition());
+                tvDuration.setText(getReadableTime((int) player.getDuration()));
+                seekBar.setMax((int) player.getDuration());
+                playBtn.setVisibility(View.GONE);
+                pauseBtn.setVisibility(View.VISIBLE);
+            }
+
             @Override
             public void onPlaybackStateChanged(int playbackState) {
                 if (playbackState == ExoPlayer.STATE_BUFFERING) {
