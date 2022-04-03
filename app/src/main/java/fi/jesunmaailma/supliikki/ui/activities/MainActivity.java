@@ -2,7 +2,6 @@ package fi.jesunmaailma.supliikki.ui.activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
@@ -13,7 +12,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.annotation.SuppressLint;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -29,7 +27,11 @@ import android.widget.TextView;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.Player;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -65,8 +67,8 @@ public class MainActivity extends AppCompatActivity {
     List<BigSlider> promoItemsList;
     List<Podcast> podcasts;
 
-    ImageView backdropImg, rewind, playBtn, pauseBtn, forward, podcastThumbnail, playerThumbnail;
-    TextView nowPlayingPodcastName, podcastName, podcastDescription, tvPosition, tvDuration;
+    ImageView backdropImg, rewind, playBtn, pauseBtn, forward, podcastThumbnail;
+    TextView nowPlayingPodcastName, nowPlayingPodcastDescription, podcastName, podcastDescription, tvPosition, tvDuration;
     SeekBar seekBar;
 
     ExoPlayer player;
@@ -74,11 +76,14 @@ public class MainActivity extends AppCompatActivity {
     Toolbar toolbar;
     SwipeRefreshLayout swipeRefreshLayout;
 
-    CardView errorContainer;
+    ProgressBar pbLoading, pbLoadingHome;
 
-    ProgressBar pbLoading, pbLoadingSlider, pbLoadingPodcasts;
+    BottomNavigationView bottomNavigationView;
 
     SupliikkiDataService service;
+
+    FirebaseAuth auth;
+    FirebaseUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +94,10 @@ public class MainActivity extends AppCompatActivity {
         podcasts = new ArrayList<>();
         player = new ExoPlayer.Builder(this).build();
 
-        podcastAdapter = new PodcastAdapter(podcasts, player);
+        auth = FirebaseAuth.getInstance();
+        user = auth.getCurrentUser();
+
+        podcastAdapter = new PodcastAdapter(MainActivity.this, podcasts, player, auth, user);
         podcastList.setAdapter(podcastAdapter);
 
         LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
@@ -98,14 +106,13 @@ public class MainActivity extends AppCompatActivity {
         backdropImg = findViewById(R.id.backdropImg);
         podcastThumbnail = findViewById(R.id.podcastThumbnail);
 
-        playerThumbnail = findViewById(R.id.playerThumbnail);
-
         rewind = findViewById(R.id.rewind);
         forward = findViewById(R.id.forward);
 
         podcastName = findViewById(R.id.podcastName);
         podcastDescription = findViewById(R.id.podcastDescription);
         nowPlayingPodcastName = findViewById(R.id.nowPlayingPodcastName);
+        nowPlayingPodcastDescription = findViewById(R.id.nowPlayingPodcastDescription);
 
         tvPosition = findViewById(R.id.tvPosition);
         tvDuration = findViewById(R.id.tvDuration);
@@ -123,11 +130,10 @@ public class MainActivity extends AppCompatActivity {
 
         swipeRefreshLayout = findViewById(R.id.swipe_refresh);
 
-        errorContainer = findViewById(R.id.error_container);
-
         pbLoading = findViewById(R.id.pb_loading);
-        pbLoadingSlider = findViewById(R.id.pbLoadingSlider);
-        pbLoadingPodcasts = findViewById(R.id.pbLoadingPodcasts);
+        pbLoadingHome = findViewById(R.id.pbLoadingHome);
+
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
         setSupportActionBar(toolbar);
 
@@ -145,8 +151,7 @@ public class MainActivity extends AppCompatActivity {
         bigSliderAdapter = new BigSliderAdapter(this, promoItemsList);
         bigSliderList.setAdapter(bigSliderAdapter);
 
-        pbLoadingSlider.setVisibility(View.VISIBLE);
-        pbLoadingPodcasts.setVisibility(View.VISIBLE);
+        pbLoadingHome.setVisibility(View.VISIBLE);
 
         getSliderData(
                 getResources().getString(R.string.supliikki_prod_api_url) +
@@ -168,10 +173,7 @@ public class MainActivity extends AppCompatActivity {
             public void onRefresh() {
                 swipeRefreshLayout.setRefreshing(false);
 
-                pbLoadingSlider.setVisibility(View.VISIBLE);
-                pbLoadingPodcasts.setVisibility(View.VISIBLE);
-
-                errorContainer.setVisibility(View.GONE);
+                pbLoadingHome.setVisibility(View.VISIBLE);
 
                 bigSliderList.setVisibility(View.GONE);
                 getSliderData(getResources().getString(R.string.supliikki_prod_api_url) +
@@ -187,6 +189,28 @@ public class MainActivity extends AppCompatActivity {
                         "&podcasts=all&user_id=1"
                 );
                 playerControls();
+            }
+        });
+
+        bottomNavigationView.setSelectedItemId(R.id.mi_home);
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.mi_hosts:
+                        startActivity(new Intent(getApplicationContext(), HostsActivity.class));
+                        overridePendingTransition(0, 0);
+                        finish();
+                        return true;
+                    case R.id.mi_home:
+                        return true;
+                    case R.id.mi_account:
+                        startActivity(new Intent(getApplicationContext(), Profile.class));
+                        overridePendingTransition(0, 0);
+                        finish();
+                        return true;
+                }
+                return false;
             }
         });
     }
@@ -205,39 +229,38 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(JSONArray response) {
                 swipeRefreshLayout.setRefreshing(false);
-                pbLoadingSlider.setVisibility(View.GONE);
-                pbLoadingPodcasts.setVisibility(View.GONE);
+                pbLoadingHome.setVisibility(View.GONE);
                 bigSliderList.setVisibility(View.VISIBLE);
 
                 promoItemsList.clear();
 
-                try {
-                    JSONObject promoItemData = response.getJSONObject(0);
+                for (int i = 0; i < response.length(); i++) {
+                    try {
+                        JSONObject promoItemData = response.getJSONObject(i);
 
-                    BigSlider bigSlider = new BigSlider();
+                        BigSlider bigSlider = new BigSlider();
 
-                    bigSlider.setId(promoItemData.getString("id"));
-                    bigSlider.setName(promoItemData.getString("name"));
-                    bigSlider.setDescription(promoItemData.getString("description"));
-                    bigSlider.setLink(promoItemData.getString("link"));
-                    bigSlider.setThumbnailUrl(promoItemData.getString("thumbnail_url"));
-                    bigSlider.setBackdropUrl(promoItemData.getString("backdrop_url"));
+                        bigSlider.setId(promoItemData.getString("id"));
+                        bigSlider.setName(promoItemData.getString("name"));
+                        bigSlider.setDescription(promoItemData.getString("description"));
+                        bigSlider.setLink(promoItemData.getString("link"));
+                        bigSlider.setThumbnailUrl(promoItemData.getString("thumbnail_url"));
+                        bigSlider.setBackdropUrl(promoItemData.getString("backdrop_url"));
 
-                    promoItemsList.add(bigSlider);
-                    bigSliderAdapter.notifyDataSetChanged();
+                        promoItemsList.add(bigSlider);
+                        bigSliderAdapter.notifyDataSetChanged();
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 
             @Override
             public void onError(String error) {
                 swipeRefreshLayout.setRefreshing(false);
-                errorContainer.setVisibility(View.VISIBLE);
 
-                pbLoadingSlider.setVisibility(View.GONE);
-                pbLoadingPodcasts.setVisibility(View.GONE);
+                pbLoadingHome.setVisibility(View.GONE);
 
                 bigSliderList.setVisibility(View.GONE);
             }
@@ -249,8 +272,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(JSONArray response) {
                 swipeRefreshLayout.setRefreshing(false);
-                pbLoadingSlider.setVisibility(View.GONE);
-                pbLoadingPodcasts.setVisibility(View.GONE);
+                pbLoadingHome.setVisibility(View.GONE);
                 podcastList.setVisibility(View.VISIBLE);
 
                 podcasts.clear();
@@ -280,10 +302,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onError(String error) {
                 swipeRefreshLayout.setRefreshing(false);
-                errorContainer.setVisibility(View.VISIBLE);
 
-                pbLoadingSlider.setVisibility(View.GONE);
-                pbLoadingPodcasts.setVisibility(View.GONE);
+                pbLoadingHome.setVisibility(View.GONE);
 
                 podcastList.setVisibility(View.GONE);
             }
@@ -360,6 +380,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (player.isPlaying()) {
             nowPlayingPodcastName.setText(Objects.requireNonNull(player.getCurrentMediaItem()).mediaMetadata.title);
+            nowPlayingPodcastDescription.setText(Objects.requireNonNull(player.getCurrentMediaItem()).mediaMetadata.description);
             podcastName.setText(Objects.requireNonNull(player.getCurrentMediaItem()).mediaMetadata.title);
             podcastDescription.setText(Objects.requireNonNull(player.getCurrentMediaItem()).mediaMetadata.description);
             tvPosition.setText(getReadableTime((int) player.getCurrentPosition()));
@@ -374,11 +395,6 @@ public class MainActivity extends AppCompatActivity {
                     .placeholder(R.drawable.supliikki_placeholder_512x512)
                     .transform(new BlurTransformation(MainActivity.this, 20))
                     .into(backdropImg);
-
-            Picasso.get()
-                    .load(Objects.requireNonNull(player.getCurrentMediaItem()).mediaMetadata.artworkUri)
-                    .placeholder(R.drawable.supliikki_placeholder_512x512)
-                    .into(playerThumbnail);
 
             Picasso.get()
                     .load(Objects.requireNonNull(player.getCurrentMediaItem()).mediaMetadata.artworkUri)
@@ -406,14 +422,10 @@ public class MainActivity extends AppCompatActivity {
                 Picasso.get()
                         .load(mediaItem.mediaMetadata.artworkUri)
                         .placeholder(R.drawable.supliikki_placeholder_512x512)
-                        .into(playerThumbnail);
-
-                Picasso.get()
-                        .load(mediaItem.mediaMetadata.artworkUri)
-                        .placeholder(R.drawable.supliikki_placeholder_512x512)
                         .into(podcastThumbnail);
 
                 nowPlayingPodcastName.setText(mediaItem.mediaMetadata.title);
+                nowPlayingPodcastDescription.setText(mediaItem.mediaMetadata.description);
                 podcastName.setText(mediaItem.mediaMetadata.title);
                 podcastDescription.setText(mediaItem.mediaMetadata.description);
                 tvPosition.setText(getReadableTime((int) player.getCurrentPosition()));
@@ -444,14 +456,10 @@ public class MainActivity extends AppCompatActivity {
                     Picasso.get()
                             .load(Objects.requireNonNull(player.getCurrentMediaItem()).mediaMetadata.artworkUri)
                             .placeholder(R.drawable.supliikki_placeholder_512x512)
-                            .into(playerThumbnail);
-
-                    Picasso.get()
-                            .load(Objects.requireNonNull(player.getCurrentMediaItem()).mediaMetadata.artworkUri)
-                            .placeholder(R.drawable.supliikki_placeholder_512x512)
                             .into(podcastThumbnail);
 
                     nowPlayingPodcastName.setText(Objects.requireNonNull(player.getCurrentMediaItem()).mediaMetadata.title);
+                    nowPlayingPodcastDescription.setText(Objects.requireNonNull(player.getCurrentMediaItem()).mediaMetadata.description);
                     podcastName.setText(Objects.requireNonNull(player.getCurrentMediaItem()).mediaMetadata.title);
                     podcastDescription.setText(Objects.requireNonNull(player.getCurrentMediaItem()).mediaMetadata.description);
                     tvPosition.setText(getReadableTime((int) player.getCurrentPosition()));
@@ -495,32 +503,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.mi_hosts) {
-            startActivity(new Intent(getApplicationContext(), HostsActivity.class));
-        }
-
         if (item.getItemId() == R.id.mi_settings) {
             startActivity(new Intent(getApplicationContext(), Settings.class));
-        }
-
-        if (item.getItemId() == R.id.mi_exit) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-            builder.setCancelable(false);
-            builder.setMessage("Haluatko varmasti poistua Supliikki-palvelusta?");
-            builder.setNegativeButton("Kyllä", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    finish();
-                }
-            });
-            builder.setPositiveButton("Ei", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-            AlertDialog dialog = builder.create();
-            dialog.show();
         }
         return false;
     }

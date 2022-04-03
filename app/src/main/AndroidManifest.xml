@@ -16,19 +16,40 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".ui.activities.HostDetailsActivity"
+            android:screenOrientation="portrait"
             android:configChanges="orientation|screenSize|layoutDirection"
             android:exported="true"
             android:theme="@style/Theme.Supliikki.NoActionBar" />
         <activity
             android:name=".ui.activities.HostsActivity"
+            android:screenOrientation="portrait"
             android:configChanges="orientation|screenSize|layoutDirection"
             android:exported="true"
             android:theme="@style/Theme.Supliikki.NoActionBar" />
         <activity
             android:name=".ui.activities.Settings"
+            android:screenOrientation="portrait"
             android:configChanges="orientation|screenSize|layoutDirection"
             android:exported="true"
             android:label="@string/title_activity_settings"
+            android:theme="@style/Theme.Supliikki.NoActionBar" />
+        <activity
+            android:name=".ui.activities.LoginActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|screenSize|layoutDirection"
+            android:exported="true"
+            android:theme="@style/Theme.Supliikki.NoActionBar" />
+        <activity
+            android:name=".ui.activities.RegisterActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|screenSize|layoutDirection"
+            android:exported="true"
+            android:theme="@style/Theme.Supliikki.NoActionBar" />
+        <activity
+            android:name=".ui.activities.Profile"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|screenSize|layoutDirection"
+            android:exported="true"
             android:theme="@style/Theme.Supliikki.NoActionBar" />
         <activity
             android:name=".ui.activities.LaunchActivity"
@@ -69,6 +90,7 @@
         </activity>
         <activity
             android:name=".ui.activities.MainActivity"
+            android:screenOrientation="portrait"
             android:configChanges="screenSize|layoutDirection|orientation"
             android:exported="true"
             android:theme="@style/Theme.Supliikki.NoActionBar" />

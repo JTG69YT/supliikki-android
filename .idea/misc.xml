@@ -4,8 +4,10 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Projektit/Supliikki/app/src/main/res/drawable/blur_bg.xml" value="0.1845" />
+        <entry key="..\:/Projektit/Supliikki/app/src/main/res/drawable/ic_account_2.xml" value="0.1845" />
         <entry key="..\:/Projektit/Supliikki/app/src/main/res/drawable/ic_account_3.xml" value="0.1845" />
         <entry key="..\:/Projektit/Supliikki/app/src/main/res/drawable/ic_arrow_down.xml" value="0.1845" />
+        <entry key="..\:/Projektit/Supliikki/app/src/main/res/drawable/ic_exit.xml" value="0.1845" />
         <entry key="..\:/Projektit/Supliikki/app/src/main/res/drawable/ic_forward_5.xml" value="0.1845" />
         <entry key="..\:/Projektit/Supliikki/app/src/main/res/drawable/ic_home.xml" value="0.1575" />
         <entry key="..\:/Projektit/Supliikki/app/src/main/res/drawable/ic_hosts.xml" value="0.1575" />
@@ -22,19 +24,22 @@
         <entry key="..\:/Projektit/Supliikki/app/src/main/res/drawable/play.xml" value="0.1845" />
         <entry key="..\:/Projektit/Supliikki/app/src/main/res/drawable/ripple_effect.xml" value="0.1845" />
         <entry key="..\:/Projektit/Supliikki/app/src/main/res/drawable/ripple_effect_rounded.xml" value="0.17" />
+        <entry key="..\:/Projektit/Supliikki/app/src/main/res/drawable/seek_progress.xml" value="0.2" />
         <entry key="..\:/Projektit/Supliikki/app/src/main/res/drawable/seek_thumb.xml" value="0.1845" />
+        <entry key="..\:/Projektit/Supliikki/app/src/main/res/drawable/selector.xml" value="0.1845" />
         <entry key="..\:/Projektit/Supliikki/app/src/main/res/layout-land/layout_snackbar_logged_in.xml" value="0.67" />
         <entry key="..\:/Projektit/Supliikki/app/src/main/res/layout/activity_host_details.xml" value="0.17604166666666668" />
-        <entry key="..\:/Projektit/Supliikki/app/src/main/res/layout/activity_hosts.xml" value="0.17604166666666668" />
+        <entry key="..\:/Projektit/Supliikki/app/src/main/res/layout/activity_hosts.xml" value="0.22" />
         <entry key="..\:/Projektit/Supliikki/app/src/main/res/layout/activity_listen_podcast.xml" value="0.25" />
-        <entry key="..\:/Projektit/Supliikki/app/src/main/res/layout/activity_login.xml" value="0.17604166666666668" />
-        <entry key="..\:/Projektit/Supliikki/app/src/main/res/layout/activity_main.xml" value="0.17604166666666668" />
-        <entry key="..\:/Projektit/Supliikki/app/src/main/res/layout/activity_register.xml" value="0.33" />
+        <entry key="..\:/Projektit/Supliikki/app/src/main/res/layout/activity_login.xml" value="0.18" />
+        <entry key="..\:/Projektit/Supliikki/app/src/main/res/layout/activity_main.xml" value="0.22" />
+        <entry key="..\:/Projektit/Supliikki/app/src/main/res/layout/activity_profile.xml" value="0.25" />
+        <entry key="..\:/Projektit/Supliikki/app/src/main/res/layout/activity_register.xml" value="0.17604166666666668" />
         <entry key="..\:/Projektit/Supliikki/app/src/main/res/layout/activity_splash.xml" value="0.17604166666666668" />
         <entry key="..\:/Projektit/Supliikki/app/src/main/res/layout/big_slider_view.xml" value="0.32447916666666665" />
         <entry key="..\:/Projektit/Supliikki/app/src/main/res/layout/custom_player_control.xml" value="0.25" />
         <entry key="..\:/Projektit/Supliikki/app/src/main/res/layout/custom_player_controller.xml" value="0.22" />
-        <entry key="..\:/Projektit/Supliikki/app/src/main/res/layout/forgot_password_dialog.xml" value="0.1" />
+        <entry key="..\:/Projektit/Supliikki/app/src/main/res/layout/forgot_password_dialog.xml" value="0.17604166666666668" />
         <entry key="..\:/Projektit/Supliikki/app/src/main/res/layout/fragment_player_view.xml" value="0.33" />
         <entry key="..\:/Projektit/Supliikki/app/src/main/res/layout/home_layout.xml" value="0.1" />
         <entry key="..\:/Projektit/Supliikki/app/src/main/res/layout/host_view_layout.xml" value="0.33" />
@@ -46,7 +51,10 @@
         <entry key="..\:/Projektit/Supliikki/app/src/main/res/layout/podcast_view_layout.xml" value="0.5" />
         <entry key="..\:/Projektit/Supliikki/app/src/main/res/layout/settings_activity.xml" value="0.25" />
         <entry key="..\:/Projektit/Supliikki/app/src/main/res/layout/slide_item_container.xml" value="0.22" />
+        <entry key="..\:/Projektit/Supliikki/app/src/main/res/layout/update_email_dialog.xml" value="0.17604166666666668" />
+        <entry key="..\:/Projektit/Supliikki/app/src/main/res/layout/update_password_dialog.xml" value="0.17604166666666668" />
         <entry key="..\:/Projektit/Supliikki/app/src/main/res/menu/nav_menu.xml" value="0.17604166666666668" />
+        <entry key="..\:/Projektit/Supliikki/app/src/main/res/menu/toolbar_menu.xml" value="0.17604166666666668" />
         <entry key="..\:/Projektit/Supliikki/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1" />
         <entry key="..\:/Projektit/Supliikki/app/src/main/res/xml/root_preferences.xml" value="0.25" />
       </map>

@@ -11,35 +11,25 @@
         android:id="@+id/player_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:alpha="1"
         android:background="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout3">
+        app:layout_constraintTop_toTopOf="@+id/constraintLayout3">
 
         <ImageView
             android:id="@+id/backdropImg"
             android:layout_width="0dp"
-            android:layout_height="550dp"
+            android:layout_height="0dp"
             android:alpha="1"
             android:foreground="#BA111111"
             android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/gl" />
-
-        <ImageView
-            android:id="@+id/close_player_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:alpha="1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_arrow_down"
-            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
         <TextView
             android:id="@+id/podcastName"
@@ -53,7 +43,7 @@
             android:text="TextView"
             android:textAlignment="center"
             android:textColor="@color/white"
-            android:textSize="18sp"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cardView2" />
@@ -61,110 +51,128 @@
         <TextView
             android:id="@+id/podcastDescription"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="200dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
             android:alpha="1"
+            android:ellipsize="end"
             android:fontFamily="@font/poppins"
+            android:maxLines="7"
             android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
             android:textColor="@color/white"
             android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@+id/backdropImg"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/podcastName" />
 
-        <ImageView
-            android:id="@+id/rewind"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+        <LinearLayout
+            android:id="@+id/linearLayout3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:foreground="@drawable/ripple_effect"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
-            app:srcCompat="@drawable/ic_replay_5" />
-
-        <ImageView
-            android:id="@+id/playBtn"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginTop="16dp"
-            android:foreground="@drawable/ripple_effect"
-            android:visibility="visible"
-            app:layout_constraintEnd_toStartOf="@+id/forward"
-            app:layout_constraintStart_toEndOf="@+id/rewind"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
-            app:srcCompat="@drawable/ic_play" />
-
-        <ProgressBar
-            android:id="@+id/pb_loading"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginTop="16dp"
-            android:visibility="gone"
-            app:layout_constraintEnd_toStartOf="@+id/forward"
-            app:layout_constraintStart_toEndOf="@+id/rewind"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
-
-        <ImageView
-            android:id="@+id/pauseBtn"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginTop="16dp"
-            android:foreground="@drawable/ripple_effect"
-            android:visibility="gone"
-            app:layout_constraintEnd_toStartOf="@+id/forward"
-            app:layout_constraintStart_toEndOf="@+id/rewind"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
-            app:srcCompat="@drawable/ic_pause" />
-
-        <ImageView
-            android:id="@+id/forward"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="12dp"
             android:layout_marginEnd="16dp"
-            android:foreground="@drawable/ripple_effect"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
-            app:srcCompat="@drawable/ic_forward_5" />
+            app:layout_constraintStart_toStartOf="@+id/player_view"
+            app:layout_constraintTop_toBottomOf="@+id/podcastDescription"
+            app:layout_constraintVertical_bias="0.32">
+
+            <ImageView
+                android:id="@+id/rewind"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="32dp"
+                android:foreground="@drawable/ripple_effect"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/podcastDescription"
+                app:srcCompat="@drawable/ic_replay_5" />
+
+            <ImageView
+                android:id="@+id/playBtn"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_gravity="center_horizontal"
+                android:foreground="@drawable/ripple_effect"
+                android:visibility="visible"
+                app:layout_constraintEnd_toStartOf="@+id/forward"
+                app:layout_constraintStart_toEndOf="@+id/rewind"
+                app:layout_constraintTop_toBottomOf="@+id/podcastDescription"
+                app:srcCompat="@drawable/ic_play" />
+
+            <ProgressBar
+                android:id="@+id/pb_loading"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_gravity="center_horizontal"
+                android:visibility="gone"
+                app:layout_constraintEnd_toStartOf="@+id/forward"
+                app:layout_constraintStart_toEndOf="@+id/rewind"
+                app:layout_constraintTop_toBottomOf="@+id/podcastDescription" />
+
+            <ImageView
+                android:id="@+id/pauseBtn"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_gravity="center_horizontal"
+                android:foreground="@drawable/ripple_effect"
+                android:visibility="gone"
+                app:layout_constraintEnd_toStartOf="@+id/forward"
+                app:layout_constraintStart_toEndOf="@+id/rewind"
+                app:layout_constraintTop_toBottomOf="@+id/podcastDescription"
+                app:srcCompat="@drawable/ic_pause" />
+
+            <ImageView
+                android:id="@+id/forward"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="8dp"
+                android:foreground="@drawable/ripple_effect"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/podcastDescription"
+                app:srcCompat="@drawable/ic_forward_5" />
+
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="32dp"
             android:layout_marginEnd="16dp"
             android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/backdropImg">
+            app:layout_constraintEnd_toEndOf="@+id/player_view"
+            app:layout_constraintStart_toStartOf="@+id/player_view"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
 
             <TextView
                 android:id="@+id/tvPosition"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:layout_weight="1"
-                android:fontFamily="@font/poppins"
+                android:fontFamily="@font/poppins_semibold"
                 android:text="00:00"
-                android:textColor="@color/black"
-                android:textSize="12sp" />
+                android:textColor="@color/white"
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/tvDuration"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
                 android:layout_weight="1"
-                android:fontFamily="@font/poppins"
+                android:fontFamily="@font/poppins_semibold"
                 android:text="00:00"
                 android:textAlignment="textEnd"
-                android:textColor="@color/black"
-                android:textSize="12sp" />
+                android:textColor="@color/white"
+                android:textSize="14sp" />
 
         </LinearLayout>
 
@@ -173,7 +181,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
@@ -182,21 +189,24 @@
 
             <SeekBar
                 android:id="@+id/seekBar"
-                style="@style/Widget.AppCompat.SeekBar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:progressBackgroundTint="@color/white"
+                android:thumbTint="@color/white" />
         </LinearLayout>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView2"
             android:layout_width="150dp"
             android:layout_height="150dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="64dp"
             android:alpha="1"
             app:cardElevation="4dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/close_player_view">
+            app:layout_constraintTop_toTopOf="@+id/backdropImg">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -204,8 +214,8 @@
 
                 <ImageView
                     android:id="@+id/podcastThumbnail"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
                     android:scaleType="fitCenter"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -221,7 +231,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:alpha="0"
-        android:elevation="16dp"
+        android:elevation="8dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -254,7 +264,6 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:alpha="0"
-        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -264,20 +273,13 @@
         <androidx.core.widget.NestedScrollView
             android:id="@+id/nestedScrollView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:fillViewport="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
-
-                <ProgressBar
-                    android:id="@+id/pbLoadingSlider"
-                    style="?android:attr/progressBarStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="64dp"
-                    android:layout_margin="16dp"
-                    android:visibility="gone" />
 
                 <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/big_slider_list"
@@ -314,7 +316,7 @@
                 </androidx.cardview.widget.CardView>
 
                 <ProgressBar
-                    android:id="@+id/pbLoadingPodcasts"
+                    android:id="@+id/pbLoadingHome"
                     style="?android:attr/progressBarStyle"
                     android:layout_width="match_parent"
                     android:layout_height="64dp"
@@ -333,104 +335,98 @@
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/error_container"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/clRoot"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:visibility="gone"
-        app:cardBackgroundColor="?attr/snackbar_background_color"
-        app:cardCornerRadius="4dp"
-        app:cardElevation="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="56dp"
+        android:alpha="1"
+        android:translationY="56dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appbar">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="16dp">
-
-            <ImageView
-                android:id="@+id/imageView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_info_3" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:fontFamily="@font/poppins"
-                android:text="Hupsista keikkaa!\nSisältöä ei voitu ladata."
-                android:textAlignment="center"
-                android:textAllCaps="false"
-                android:textColor="?attr/snackbar_text_color"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView3" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
+        app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout3"
         android:layout_width="0dp"
         android:layout_height="?attr/actionBarSize"
         android:alpha="0"
-        android:background="#EFEFEF"
+        android:background="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="SpeakableTextPresentCheck">
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <ImageView
         android:id="@+id/open_player_view"
         android:layout_width="32dp"
         android:layout_height="32dp"
-        android:layout_marginStart="8dp"
         android:alpha="0"
         app:layout_constraintBottom_toBottomOf="@+id/constraintLayout3"
         app:layout_constraintStart_toStartOf="@+id/constraintLayout3"
         app:layout_constraintTop_toTopOf="@+id/constraintLayout3"
         app:srcCompat="@drawable/ic_arrow_up" />
 
-    <ImageView
-        android:id="@+id/playerThumbnail"
-        android:layout_width="?attr/actionBarSize"
-        android:layout_height="?attr/actionBarSize"
-        android:layout_marginStart="8dp"
-        android:alpha="0"
-        app:layout_constraintBottom_toBottomOf="@+id/constraintLayout3"
-        app:layout_constraintStart_toEndOf="@+id/open_player_view"
-        app:layout_constraintTop_toTopOf="@+id/constraintLayout3"
-        app:srcCompat="@drawable/supliikki_placeholder_512x512" />
-
-    <TextView
-        android:id="@+id/nowPlayingPodcastName"
+    <LinearLayout
+        android:id="@+id/linearLayout4"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginEnd="16dp"
         android:alpha="0"
-        android:ellipsize="end"
-        android:fontFamily="@font/poppins"
-        android:maxLines="1"
-        android:text="TextView"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/playerThumbnail"
-        app:layout_constraintEnd_toEndOf="@id/constraintLayout3"
-        app:layout_constraintStart_toEndOf="@+id/playerThumbnail"
-        app:layout_constraintTop_toTopOf="@+id/playerThumbnail" />
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@+id/open_player_view"
+        app:layout_constraintEnd_toEndOf="@+id/appbar"
+        app:layout_constraintStart_toEndOf="@+id/open_player_view"
+        app:layout_constraintTop_toTopOf="@+id/open_player_view">
+
+        <TextView
+            android:id="@+id/nowPlayingPodcastName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="@font/poppins_semibold"
+            android:maxLines="1"
+            android:text="TextView"
+            android:textAllCaps="true"
+            android:textColor="#333333"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/nowPlayingPodcastDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="@font/poppins"
+            android:maxLines="1"
+            android:text="TextView"
+            android:textColor="#616161"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/close_player_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:alpha="1"
+        app:layout_constraintBottom_toBottomOf="@+id/constraintLayout3"
+        app:layout_constraintStart_toStartOf="@+id/constraintLayout3"
+        app:layout_constraintTop_toTopOf="@+id/constraintLayout3"
+        app:srcCompat="@drawable/ic_arrow_down"
+        tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:translationY="56dp"
+        app:itemBackground="@color/white"
+        app:itemIconTint="@drawable/selector"
+        app:itemTextColor="@drawable/selector"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/toolbar_menu" />
 
 </androidx.constraintlayout.motion.widget.MotionLayout>

@@ -1,7 +1,6 @@
 package fi.jesunmaailma.supliikki.ui.activities;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
@@ -9,11 +8,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import org.json.JSONArray;
@@ -49,6 +51,8 @@ public class HostsActivity extends AppCompatActivity {
 
     SupliikkiDataService service;
 
+    BottomNavigationView bottomNavigationView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,10 +70,7 @@ public class HostsActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
 
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
         analytics = FirebaseAnalytics.getInstance(this);
 
@@ -115,6 +116,28 @@ public class HostsActivity extends AppCompatActivity {
                 );
             }
         });
+
+        bottomNavigationView.setSelectedItemId(R.id.mi_hosts);
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.mi_hosts:
+                        return true;
+                    case R.id.mi_home:
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        overridePendingTransition(0, 0);
+                        finish();
+                        return true;
+                    case R.id.mi_account:
+                        startActivity(new Intent(getApplicationContext(), Profile.class));
+                        overridePendingTransition(0, 0);
+                        finish();
+                        return true;
+                }
+                return false;
+            }
+        });
     }
 
     public void getHostData(String url) {
@@ -156,13 +179,5 @@ public class HostsActivity extends AppCompatActivity {
                 hostList.setVisibility(View.GONE);
             }
         });
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
-        }
-        return super.onOptionsItemSelected(item);
     }
 }

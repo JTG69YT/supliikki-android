@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/mi_home"
+        android:icon="@drawable/ic_home"
+        android:title="Etusivu" />
+    <item
+        android:id="@+id/mi_hosts"
+        android:icon="@drawable/ic_hosts"
+        android:title="Juontajat" />
+    <item
+        android:id="@+id/mi_account"
+        android:icon="@drawable/ic_account_3"
+        android:title="Oma Supliikki" />
+
+</menu>

@@ -2,7 +2,7 @@
     <string name="app_name">Supliikki</string>
 
     <string name="supliikki_dev_api_url">http://jesunmaailma.tk/supliikki-cms/api/v1/api.php</string>
-    <string name="supliikki_prod_api_url">https://jesunmaailma.ml/supliikki-cms/api/v1/api.php</string>
+    <string name="supliikki_prod_api_url">https://admin.jesunmaailma.ml/supliikki-cms/api/v1/api.php</string>
     <string name="supliikki_api_key">1A4mgi2rBHCJdqggsYVx</string>
 
     <string name="open">Avaa vetovalikko</string>

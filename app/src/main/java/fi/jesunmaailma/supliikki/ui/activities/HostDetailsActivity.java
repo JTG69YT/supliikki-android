@@ -14,13 +14,12 @@ import com.squareup.picasso.Picasso;
 
 import fi.jesunmaailma.supliikki.R;
 import fi.jesunmaailma.supliikki.models.Host;
-import jp.wasabeef.picasso.transformations.BlurTransformation;
 
 public class HostDetailsActivity extends AppCompatActivity {
     Host host;
     Toolbar toolbar;
 
-    ImageView backdropImg, hostThumbnail;
+    ImageView backdropImg;
     TextView hostName, hostDescription;
 
     @Override
@@ -40,19 +39,12 @@ public class HostDetailsActivity extends AppCompatActivity {
         }
 
         backdropImg = findViewById(R.id.backdropImg);
-        hostThumbnail = findViewById(R.id.hostThumbnail);
         hostName = findViewById(R.id.hostName);
         hostDescription = findViewById(R.id.hostDescription);
 
         Picasso.get()
                 .load(host.getHostImage())
-                .transform(new BlurTransformation(getApplicationContext(), 20))
                 .into(backdropImg);
-
-        Picasso.get()
-                .load(host.getHostImage())
-                .placeholder(R.drawable.supliikki_placeholder_512x512)
-                .into(hostThumbnail);
 
         hostName.setText(host.getName());
         hostDescription.setText(host.getDescription());

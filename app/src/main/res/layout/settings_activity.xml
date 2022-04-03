@@ -30,11 +30,11 @@
                 android:id="@+id/textView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:fontFamily="@font/poppins_bold"
+                android:fontFamily="@font/poppins"
                 android:gravity="center"
                 android:text="Asetukset"
                 android:textAlignment="center"
-                android:textColor="@color/black"
+                android:textColor="@color/brand_color"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
