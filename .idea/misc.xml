@@ -32,7 +32,7 @@
         <entry key="..\:/Projektit/Supliikki/app/src/main/res/layout/activity_hosts.xml" value="0.22" />
         <entry key="..\:/Projektit/Supliikki/app/src/main/res/layout/activity_listen_podcast.xml" value="0.25" />
         <entry key="..\:/Projektit/Supliikki/app/src/main/res/layout/activity_login.xml" value="0.18" />
-        <entry key="..\:/Projektit/Supliikki/app/src/main/res/layout/activity_main.xml" value="0.22" />
+        <entry key="..\:/Projektit/Supliikki/app/src/main/res/layout/activity_main.xml" value="0.2" />
         <entry key="..\:/Projektit/Supliikki/app/src/main/res/layout/activity_profile.xml" value="0.25" />
         <entry key="..\:/Projektit/Supliikki/app/src/main/res/layout/activity_register.xml" value="0.17604166666666668" />
         <entry key="..\:/Projektit/Supliikki/app/src/main/res/layout/activity_splash.xml" value="0.17604166666666668" />
@@ -60,7 +60,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Embedded JDK" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_X" project-jdk-name="Embedded JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

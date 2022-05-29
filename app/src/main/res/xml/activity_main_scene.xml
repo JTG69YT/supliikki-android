@@ -96,7 +96,7 @@
     <Transition
         motion:constraintSetEnd="@+id/start"
         motion:constraintSetStart="@+id/end"
-        motion:duration="1000">
+        motion:duration="250">
         <OnSwipe
             motion:dragDirection="dragDown"
             motion:touchAnchorId="@id/constraintLayout3"
@@ -166,7 +166,7 @@
     <Transition
         motion:constraintSetEnd="@+id/end"
         motion:constraintSetStart="@+id/start"
-        motion:duration="1000">
+        motion:duration="250">
         <OnSwipe
             motion:dragDirection="dragUp"
             motion:touchAnchorId="@id/constraintLayout3"

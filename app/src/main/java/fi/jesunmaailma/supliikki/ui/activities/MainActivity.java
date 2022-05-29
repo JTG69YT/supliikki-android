@@ -154,13 +154,13 @@ public class MainActivity extends AppCompatActivity {
         pbLoadingHome.setVisibility(View.VISIBLE);
 
         getSliderData(
-                getResources().getString(R.string.supliikki_prod_api_url) +
+                getResources().getString(R.string.supliikki_dev_api_url) +
                         "?api_key=" +
                         getResources().getString(R.string.supliikki_api_key) +
                         "&promoItems=all&user_id=1"
         );
         getPodcastData(
-                getResources().getString(R.string.supliikki_prod_api_url) +
+                getResources().getString(R.string.supliikki_dev_api_url) +
                         "?api_key=" +
                         getResources().getString(R.string.supliikki_api_key) +
                         "&podcasts=all&user_id=1"
@@ -176,14 +176,14 @@ public class MainActivity extends AppCompatActivity {
                 pbLoadingHome.setVisibility(View.VISIBLE);
 
                 bigSliderList.setVisibility(View.GONE);
-                getSliderData(getResources().getString(R.string.supliikki_prod_api_url) +
+                getSliderData(getResources().getString(R.string.supliikki_dev_api_url) +
                         "?api_key=" +
                         getResources().getString(R.string.supliikki_api_key) +
                         "&promoItems=all&user_id=1"
                 );
 
                 podcastList.setVisibility(View.GONE);
-                getPodcastData(getResources().getString(R.string.supliikki_prod_api_url) +
+                getPodcastData(getResources().getString(R.string.supliikki_dev_api_url) +
                         "?api_key=" +
                         getResources().getString(R.string.supliikki_api_key) +
                         "&podcasts=all&user_id=1"
